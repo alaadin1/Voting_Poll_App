@@ -8,6 +8,12 @@ const dataFile = path.join(__dirname, "data.json")
 //support POST request from a form data with URL encoded 
 app.use(express.urlencoded({extended:true}))
 
+
+//Enable CORS
+app.use((req,res,next)=>{
+    res.setHeader("Access-Control-Allow-Origin", "*");
+})
+//get the percentages
 app.get('/poll', async(req,res)=>{
 
     //take our json file and read the data inside
