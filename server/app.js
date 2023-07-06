@@ -33,6 +33,20 @@ app.get('/poll', async(req,res)=>{
 
 })
 
+//send votes based on our input
+app.post('/poll', async(req,res) =>{
+
+    //take our json file and read the data inside
+    let data =  JSON.parse(await fs.readFile(dataFile, 'utf8'))
+
+    //get the information from our request body (the form)
+    let value = req.body.add
+    data[value]++
+
+    await fs.writeFile(dataFile, JSON.stringify(data))
+    res.end(`${value} has been updated!`)
+})
+
 
 
 const PORT = 5500
