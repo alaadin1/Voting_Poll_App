@@ -42,3 +42,7 @@
     padding: 0.5rem 0;
     font-size: 0.85rem
 }
+
+#message{
+    width: 500px;
+}

@@ -17,7 +17,49 @@ class Poll {
         const response = await fetch(this.endpoint)
         const data = await response.json()
 
-        console.log(data)
+        
+        this.root.querySelectorAll(".poll__option").forEach(option =>{option.remove()})
+        
+        //create a div for each element in the arr
+        for(const option of data){
+            const template = document.createElement("template")
+            const fragment = template.content
+
+            template.innerHTML = `
+            <div class="poll__option ${this.selected === option.label ? "poll__option--selected" : ""}">
+                <div class="poll__option-fill"></div>
+                <div class="poll__option-info">
+                    <span class="poll__label"> ${option.label} </span>
+                    <span class="poll__label"> ${option.percentage}%</span>
+                </div>
+            </div>
+            `;
+        
+            if(!this.selected){
+                fragment.querySelector(".poll__option").addEventListener("click", () =>{
+                    
+                    fetch (this.endpoint,{
+                        method: "post",
+                        body: `add=${ option.label }`,
+                        headers: {
+                            "Content-Type": "application/x-www-form-urlencoded"
+                        }
+                    }).then(()=>{
+                        this.selected = option.label
+                        document.getElementById("message").innerHTML ="You have voted! Please open a new window to vote again"
+                        sessionStorage.setItem("poll-selected", option.label)
+                        //sessionStorage.removeItem("poll-selected")
+                        this._refresh()
+                        //sessionStorage.removeItem("poll-selected")
+                    })
+                })
+            }
+
+            fragment.querySelector(".poll__option-fill").style.width = `${option.percentage}%`
+            this.root.appendChild(fragment)
+            
+        }
+        
     }
 }
 
@@ -25,5 +67,3 @@ const p = new Poll(
     document.querySelector(".poll"),
     "Which do you prefer?"
 )
-
-console.log(p)

@@ -12,6 +12,7 @@ app.use(express.urlencoded({extended:true}))
 //Enable CORS
 app.use((req,res,next)=>{
     res.setHeader("Access-Control-Allow-Origin", "*");
+    next()
 })
 //get the percentages
 app.get('/poll', async(req,res)=>{
