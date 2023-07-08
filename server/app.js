@@ -1,10 +1,9 @@
 const express = require("express");
 const pollRouter = require('./routes/pollsRoute')
-const fs = require("fs").promises;
-const path = require("path")
+const connectDB = require('./db/connect')
+require('dotenv').config()
 
 const app = express()
-const dataFile = path.join(__dirname, "data.json")
 
 //support POST request from a form data with URL encoded 
 app.use(express.urlencoded({extended:true}))
@@ -20,8 +19,20 @@ app.use('/poll', pollRouter)
 
 
 const PORT = 5500
-app.listen(PORT, ()=>{
-    console.log(`Listening on PORT ${PORT}... `)
-})
+const start = async() =>{
+    try{
+        await connectDB(process.env.MONGO_URI)
+
+        app.listen(PORT, ()=>{
+            console.log(`Listening on PORT ${PORT}... `)
+        })
+
+    }
+    catch(error){
+        console.log(error)
+    }
+}
+
+start()
 
 //recieve data via post
