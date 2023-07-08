@@ -1,9 +1,10 @@
 const express = require ('express')
 const router = express.Router()
 
-const {getAllVotes,postVotes} = require('../controller/polls')
+const {getAllVotes,postVotes,getDB} = require('../controller/polls')
 
 //set up our routes
 router.route('/').get(getAllVotes).post(postVotes)
+router.route('/db').get(getDB)
 
 module.exports = router

@@ -1,5 +1,6 @@
 const fs = require("fs").promises;
 const path = require("path")
+const Votes = require('../models/voting')
 
 
 const dataFile = path.join(__dirname,"..", "data.json")
@@ -42,8 +43,14 @@ const postVotes = async(req,res) =>{
     res.end(`${value} has been updated!`)
 }
 
+const getDB = async (req,res) =>{
+    const votes = await Votes.create(req.body)
+    res.send(votes)
+}
+
 
 module.exports = {
     getAllVotes,
-    postVotes
+    postVotes, 
+    getDB
 }
