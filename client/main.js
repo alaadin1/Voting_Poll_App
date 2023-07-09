@@ -16,12 +16,14 @@ class Poll {
         //call api and make a request to the endpoint and get the data as an arr
         const response = await fetch(this.endpoint)
         const data = await response.json()
+        console.log(data)
 
         
         this.root.querySelectorAll(".poll__option").forEach(option =>{option.remove()})
         
         //create a div for each element in the arr
         for(const option of data){
+            console.log(option)
             const template = document.createElement("template")
             const fragment = template.content
 
@@ -35,30 +37,31 @@ class Poll {
             </div>
             `;
         
-            if(!this.selected){
-                fragment.querySelector(".poll__option").addEventListener("click", () =>{
+        
+        //     if(!this.selected){
+        //         fragment.querySelector(".poll__option").addEventListener("click", () =>{
                     
-                    fetch (this.endpoint,{
-                        method: "post",
-                        body: `add=${ option.label }`,
-                        headers: {
-                            "Content-Type": "application/x-www-form-urlencoded"
-                        }
-                    }).then(()=>{
-                        this.selected = option.label
-                        document.getElementById("message").innerHTML ="You have voted! Please open a new window to vote again"
-                        sessionStorage.setItem("poll-selected", option.label)
-                        //sessionStorage.removeItem("poll-selected")
-                        this._refresh()
-                        //sessionStorage.removeItem("poll-selected")
-                    })
-                })
-            }
+        //             fetch (this.endpoint,{
+        //                 method: "post",
+        //                 body: `add=${ option.label }`,
+        //                 headers: {
+        //                     "Content-Type": "application/x-www-form-urlencoded"
+        //                 }
+        //             }).then(()=>{
+        //                 this.selected = option.label
+        //                 document.getElementById("message").innerHTML ="You have voted! Please open a new window to vote again"
+        //                 sessionStorage.setItem("poll-selected", option.label)
+        //                 //sessionStorage.removeItem("poll-selected")
+        //                 this._refresh()
+        //                 //sessionStorage.removeItem("poll-selected")
+        //             })
+        //         })
+        //     }
 
             fragment.querySelector(".poll__option-fill").style.width = `${option.percentage}%`
             this.root.appendChild(fragment)
             
-        }
+         }
         
     }
 }

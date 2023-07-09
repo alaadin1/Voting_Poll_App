@@ -8,23 +8,40 @@ const dataFile = path.join(__dirname,"..", "data.json")
 const getAllVotes = async (req,res)=>{
 
     //take our json file and read the data inside
-    let data =  JSON.parse(await fs.readFile(dataFile, 'utf8'))
+    let data =  await Votes.find({})
+    let total = 0
+    //console.log(data)
     
     //to find the perecent, we need two things: the total votes and the indivudal votes
 
     //get total vote buy looping through the values of the obj and adding them up
     // Object.values loops through the values and returns an arr of all the value. 
     // then .reduce adds those values in the arr
-    const totalVotes = Object.values(data).reduce((total, num) => total += num, 0)
 
+    const totalVotes = data.forEach((vote)=>{
+        total += vote.votes  
+    })
+    // console.log(totalVotes)
+    console.log(total)
+    
+
+    //reduce((total, num) => total += num, 0)
 
     //Now we need to iterate through the our obj and find the percentage 
-    data = Object.entries(data).map(([label,votes]) => {
-        return {
-            label,
-            percentage: (((100 *votes)/totalVotes) || 0).toFixed(0)
+    data = data.map((vote)=>{
+        return{
+            label:vote.name,
+            percentage: (((100 *vote.votes)/total) || 0).toFixed(0)
         }
-    })
+})
+    
+    
+    // Object.entries(data).map(([label,votes]) => {
+    //     return {
+    //         label,
+    //         percentage: (((100 *votes)/totalVotes) || 0).toFixed(0)
+    //     }
+    // })
 
     res.json(data)
 
