@@ -9,7 +9,7 @@ const app = express()
 //support POST request from a form data with URL encoded 
 app.use(express.urlencoded({extended:true}))
 app.use(express.json())
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.urlencoded({ extended: true }))
 
 
 //Enable CORS

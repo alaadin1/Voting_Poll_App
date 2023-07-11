@@ -22,7 +22,7 @@ const getAllVotes = async (req,res)=>{
         total += vote.votes  
     })
     // console.log(totalVotes)
-    console.log(total)
+    //console.log(total)
     
 
     //reduce((total, num) => total += num, 0)
@@ -65,9 +65,25 @@ const getDB = async (req,res) =>{
     res.send(votes)
 }
 
+const addOption = async (req, res) => {
+    const {option} = req.body
+    console.log(req.body)
+    if(option){
+        await Votes.create({name:option, votes:0})
+        // res.json(votes)
+    }
+    else{
+        res.status(401).send('Please Provide an option')
+    }
+    
+    //res.send('Hi')
+    
+}
+
 
 module.exports = {
     getAllVotes,
     postVotes, 
-    getDB
+    getDB, 
+    addOption
 }
